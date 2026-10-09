@@ -1,0 +1,241 @@
+.wordle {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The board takes whatever space the keyboard leaves and stays 5:6. */
+.board-wrap {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+}
+
+.board {
+  width: min(350px, calc(100cqw - 24px), calc((100cqh - 20px) * 5 / 6));
+  aspect-ratio: 5 / 6;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 5px;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.tile {
+  --final: transparent;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--tile-empty-border);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: min(2rem, 8.5cqh, 11cqw);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ink);
+  user-select: none;
+}
+
+.tile.filled {
+  border-color: var(--tile-filled-border);
+}
+
+.tile.correct {
+  --final: var(--tile-correct);
+}
+.tile.present {
+  --final: var(--tile-present);
+}
+.tile.absent {
+  --final: var(--tile-absent);
+}
+
+/* Glazed ceramic: final colour plus a soft sheen. */
+.tile.correct:not(.reveal),
+.tile.present:not(.reveal),
+.tile.absent:not(.reveal),
+.tile.reveal {
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.tile.correct:not(.reveal),
+.tile.present:not(.reveal),
+.tile.absent:not(.reveal) {
+  background: var(--final);
+  border-color: var(--final);
+  color: var(--tile-text-done);
+}
+
+.tile.pop {
+  animation: tile-pop 0.1s ease-out;
+}
+
+.tile.reveal {
+  animation: tile-flip 0.5s ease-in-out both;
+  animation-delay: calc(var(--i) * 280ms);
+}
+
+.tile.bounce {
+  animation: tile-bounce 1s ease both;
+  animation-delay: calc(var(--i) * 100ms);
+}
+
+@keyframes tile-pop {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes tile-flip {
+  0% {
+    transform: rotateX(0);
+    background: transparent;
+    border-color: var(--tile-filled-border);
+    color: var(--ink);
+    box-shadow: none;
+  }
+  49.9% {
+    transform: rotateX(-90deg);
+    background: transparent;
+    border-color: var(--tile-filled-border);
+    color: var(--ink);
+    box-shadow: none;
+  }
+  50% {
+    transform: rotateX(-90deg);
+    background: var(--final);
+    border-color: var(--final);
+    color: var(--tile-text-done);
+  }
+  100% {
+    transform: rotateX(0);
+    background: var(--final);
+    border-color: var(--final);
+    color: var(--tile-text-done);
+  }
+}
+
+@keyframes tile-bounce {
+  0%,
+  20% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30%);
+  }
+  50% {
+    transform: translateY(5%);
+  }
+  60% {
+    transform: translateY(-15%);
+  }
+  80% {
+    transform: translateY(2%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Keyboard ---------- */
+
+.keyboard {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 4px 6px calc(8px + env(safe-area-inset-bottom));
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kb-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.key {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  background: var(--key-bg);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.15rem;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.key:active {
+  filter: brightness(0.92);
+}
+
+.key-wide {
+  flex: 1.5;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.kb-spacer {
+  flex: 0.5;
+}
+
+.key.correct {
+  background: var(--tile-correct);
+  color: #fff;
+}
+.key.present {
+  background: var(--tile-present);
+  color: #fff;
+}
+.key.absent {
+  background: var(--tile-absent);
+  color: #fff;
+}
+
+@media (max-height: 680px) {
+  .key {
+    height: 48px;
+  }
+  .kb-row {
+    margin-bottom: 6px;
+  }
+}
+
+/* ---------- After the game ---------- */
+
+.done-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 16px 10px;
+}
+
+.answer-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 0 0 16px;
+}
+
+.answer-tiles .tile {
+  width: 44px;
+  height: 44px;
+  font-size: 1.4rem;
+}

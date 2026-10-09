@@ -1,0 +1,985 @@
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  text-align: center;
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+/* ---------- Game page ---------- */
+
+.game-area {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-connections {
+  overflow-y: auto;
+}
+
+/* ---------- Home ---------- */
+
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: calc(20px + env(safe-area-inset-top));
+}
+
+.home-head {
+  margin-bottom: 2px;
+}
+
+.home-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -8px -10px 0 0;
+}
+
+.home-topline .eyebrow {
+  margin: 0;
+}
+
+.home-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.home-hero h1 {
+  font-size: clamp(1.8rem, 8vw, 2.4rem);
+}
+
+.home-jug {
+  flex-shrink: 0;
+  width: clamp(92px, 27vw, 124px);
+  height: auto;
+  margin-bottom: -6px;
+  transform-origin: 50% 90%;
+  animation: jug-sway 6s ease-in-out infinite;
+}
+
+@keyframes jug-sway {
+  50% {
+    transform: rotate(-2deg);
+  }
+}
+
+.home-sub {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+}
+
+.home-games {
+  display: grid;
+  gap: 14px;
+}
+
+.game-card,
+.side-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px 16px;
+  padding: 18px;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+a.game-card:active,
+a.side-card:active {
+  transform: scale(0.985);
+}
+
+.game-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.game-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.game-text strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+}
+
+.game-text > span {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.game-text .game-level {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.game-progress {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+}
+
+.side-card {
+  padding: 14px 18px;
+}
+
+.side-card .game-text strong {
+  font-size: 1.15rem;
+}
+
+.side-card .progress-bar {
+  margin-top: 6px;
+}
+
+.envelope-card.ready {
+  border-color: var(--clay);
+  background: color-mix(in srgb, var(--clay-soft) 60%, var(--card));
+  animation: glow 2.4s ease-in-out infinite;
+}
+
+@keyframes glow {
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--clay) 18%, transparent), var(--shadow);
+  }
+}
+
+/* ---------- Level map (a shelf of pots) ---------- */
+
+.level-map {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px 8px;
+  padding-top: 12px;
+}
+
+.pot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 48 / 56;
+  max-width: 76px;
+  margin: 0 auto;
+  width: 100%;
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform 0.12s ease;
+}
+
+a.pot:active {
+  transform: scale(0.94);
+}
+
+.pot-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pot-body,
+.pot-rim {
+  fill: var(--bisque);
+  stroke: var(--bisque-deep);
+  stroke-width: 1.2;
+}
+
+.pot-drip {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.pot-num {
+  position: relative;
+  margin-top: 32%;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.pot-locked {
+  opacity: 0.55;
+}
+
+.pot-locked .pot-num {
+  color: var(--ink-soft);
+}
+
+.pot-open .pot-body,
+.pot-open .pot-rim {
+  fill: var(--card);
+  stroke: var(--green);
+  stroke-width: 2;
+}
+
+.pot-current .pot-body,
+.pot-current .pot-rim {
+  fill: var(--green-soft);
+  stroke: var(--green);
+  stroke-width: 2.5;
+}
+
+.pot-current {
+  animation: pot-bob 1.8s ease-in-out infinite;
+}
+
+.pot-current .pot-num {
+  color: var(--green);
+}
+
+/* Sweet peas: a sprout on the current pot, a bloom on every finished one. */
+.pot-bloom {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bloom-in 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+
+.sprout {
+  transform-box: fill-box;
+  transform-origin: 30% 100%;
+  animation: sprout-sway 3s ease-in-out infinite;
+}
+
+@keyframes bloom-in {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes sprout-sway {
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes pot-bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.pot-won .pot-body,
+.pot-won .pot-rim {
+  fill: var(--green);
+  stroke: var(--green-deep);
+}
+
+.pot-lost .pot-body,
+.pot-lost .pot-rim {
+  fill: var(--clay);
+  stroke: var(--clay-deep);
+}
+
+.pot-won .pot-num,
+.pot-lost .pot-num {
+  color: #fff;
+}
+
+/* ---------- Stats ---------- */
+
+.stats {
+  margin: 8px 0 18px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  line-height: 1.2;
+}
+
+.dist {
+  margin-top: 18px;
+}
+
+.dist h3,
+.stats h3 {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.dist-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.dist-n {
+  width: 12px;
+  text-align: right;
+}
+
+.dist-bar {
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--slate);
+  color: #fff;
+  text-align: right;
+  transition: width 0.4s ease;
+}
+
+.dist-bar.current {
+  background: var(--green);
+}
+
+.perfect {
+  margin: 16px 0 0;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.perfect strong {
+  color: var(--green);
+  font-size: 1.2rem;
+}
+
+/* ---------- Result modal ---------- */
+
+.fact-card {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  border: 1.5px dashed var(--line-strong);
+}
+
+.fact-card p {
+  margin: 4px 0 0;
+}
+
+.fact-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+
+.result-photo {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 12px;
+}
+
+.result-actions {
+  margin-top: 4px;
+}
+
+/* ---------- Polaroid ---------- */
+
+.polaroid {
+  margin: 0;
+  padding: 10px 10px 0;
+  background: #fffefb;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 10px 24px rgba(0, 0, 0, 0.14);
+  transform: rotate(var(--tilt, 0deg));
+  color: #2d2622;
+}
+
+.polaroid-sm {
+  width: 150px;
+}
+.polaroid-md {
+  width: 220px;
+}
+.polaroid-lg {
+  width: min(300px, 74vw);
+}
+
+.polaroid-img {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--bisque);
+}
+
+.polaroid-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.polaroid figcaption {
+  padding: 6px 2px 10px;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+.polaroid-sm figcaption {
+  font-size: 1.05rem;
+}
+
+.glaze-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 48%, transparent 62%);
+  transform: translateX(-120%);
+}
+
+/* The glaze reveal: unfired clay → full colour, then a glossy sweep. */
+.polaroid.revealing img {
+  animation: glaze-reveal 2.2s ease-out both;
+}
+
+.polaroid.revealing .glaze-shimmer {
+  animation: shimmer 1.2s ease-in-out 1.9s both;
+}
+
+.polaroid.revealing {
+  animation: polaroid-drop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@keyframes glaze-reveal {
+  0% {
+    filter: sepia(1) saturate(0.4) brightness(0.85) blur(10px);
+  }
+  60% {
+    filter: sepia(0.5) saturate(0.8) brightness(0.95) blur(3px);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes polaroid-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) rotate(calc(var(--tilt, 0deg) - 8deg)) scale(0.9);
+  }
+}
+
+/* ---------- Reveals (notes, kiln, finale) ---------- */
+
+.reveal-modal h2 {
+  margin-bottom: 14px;
+}
+
+.note-paper {
+  margin: 0 0 18px;
+  padding: 20px 18px;
+  border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(transparent 0 31px, color-mix(in srgb, var(--green) 14%, transparent) 31px 32px),
+    var(--paper);
+}
+
+.note-message {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 32px;
+  white-space: pre-line;
+}
+
+.note-sign {
+  margin: 10px 0 0;
+  text-align: right;
+  font-size: 1.4rem;
+  color: var(--clay);
+}
+
+.reveal-photo {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 22px;
+}
+
+.reveal-envelope {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+  animation: pot-bob 1.8s ease-in-out infinite;
+}
+
+/* ---------- How to play ---------- */
+
+.htp-list {
+  padding-left: 20px;
+  margin: 0 0 16px;
+}
+
+.htp-list li {
+  margin-bottom: 4px;
+}
+
+.htp-example {
+  margin-bottom: 12px;
+}
+
+.htp-example p {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+}
+
+.htp-row {
+  display: flex;
+  gap: 4px;
+}
+
+.htp-tile {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--tile-filled-border);
+  border-radius: 5px;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.htp-tile.correct,
+.htp-tile.present,
+.htp-tile.absent {
+  color: #fff;
+}
+.htp-tile.correct {
+  background: var(--tile-correct);
+  border-color: var(--tile-correct);
+}
+.htp-tile.present {
+  background: var(--tile-present);
+  border-color: var(--tile-present);
+}
+.htp-tile.absent {
+  background: var(--tile-absent);
+  border-color: var(--tile-absent);
+}
+
+.htp-groups {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.htp-group {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--grp-ink);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.htp-group strong {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.htp-foot {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0 0 18px;
+}
+
+/* ---------- The Kiln ---------- */
+
+.kiln-intro {
+  text-align: center;
+  color: var(--ink-soft);
+  margin: 4px 0 22px;
+}
+
+.kiln-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 26px 14px;
+  justify-items: center;
+}
+
+.kiln-slot {
+  width: 100%;
+  max-width: 180px;
+}
+
+.kiln-slot.fired {
+  padding: 0;
+  border: 0;
+  background: none;
+  display: flex;
+  justify-content: center;
+}
+
+.kiln-slot.unfired {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 14px 14px;
+  border-radius: var(--radius-lg);
+  border: 1.5px dashed var(--line-strong);
+  background: color-mix(in srgb, var(--bisque) 50%, transparent);
+}
+
+.clay-piece {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #d8b79c, #b98a68);
+  color: #a8775a;
+  box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gauge {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bisque-deep);
+  overflow: hidden;
+}
+
+.gauge > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #e9b44c, #e07a2f, #c2412b);
+}
+
+.gauge-temp {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--clay);
+}
+
+.gauge-left {
+  margin: -6px 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.photo-modal {
+  display: flex;
+  justify-content: center;
+  padding-top: 48px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.photo-modal .modal-close {
+  color: #fff;
+}
+
+/* ---------- Lock screen ---------- */
+
+.lock {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.lock-door {
+  width: 100%;
+  max-width: 380px;
+  padding: 30px 24px 22px;
+  text-align: center;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.lock.opening .lock-door {
+  transform: perspective(800px) rotateY(-70deg);
+  transform-origin: left center;
+  opacity: 0;
+}
+
+.lock-badge {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.lock-padlock {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--clay);
+  color: #fff;
+  border: 3px solid var(--card);
+}
+
+.lock h1 {
+  font-size: 1.7rem;
+  margin-bottom: 18px;
+}
+
+.lock-prompt {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--ink-soft);
+}
+
+.lock-input {
+  width: 100%;
+  height: 56px;
+  margin-bottom: 14px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.lock-input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.lock-message {
+  min-height: 1.5em;
+  margin: 12px 0 0;
+  color: var(--clay-deep);
+  font-weight: 600;
+}
+
+.lock-hint {
+  margin: 4px 0 0;
+  font-size: 1.35rem;
+  color: var(--green);
+}
+
+/* ---------- Finale ---------- */
+
+.finale {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.envelope-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12vh;
+  border: 0;
+  background: none;
+  animation: pot-bob 2s ease-in-out infinite;
+}
+
+.envelope-big .hand {
+  font-size: 1.6rem;
+  color: var(--clay);
+}
+
+.letter-paper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-top: 12px;
+  padding: 28px 22px 26px;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(transparent 0 35px, color-mix(in srgb, var(--green) 13%, transparent) 35px 36px),
+    #fffdf6;
+  color: #2d2622;
+  box-shadow: var(--shadow);
+  animation: letter-in 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
+}
+
+.letter-sprig {
+  position: absolute;
+  top: -14px;
+  right: -6px;
+  width: 92px;
+  transform: rotate(8deg);
+}
+
+.letter-paper h2 {
+  font-family: var(--font-hand);
+  font-size: 2.4rem;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.letter-paper p {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+  line-height: 36px;
+}
+
+.letter-paper .letter-sign {
+  text-align: right;
+  color: var(--clay);
+}
+
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.96);
+  }
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.confetti span {
+  position: absolute;
+  top: -20px;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.confetti span.round {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translate(var(--drift), 110vh) rotate(540deg);
+    opacity: 0.8;
+  }
+}
+
+/* ---------- Settings ---------- */
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-section {
+  padding: 18px;
+}
+
+.settings-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.settings-section p {
+  margin: 0 0 8px;
+}
+
+.settings-section .btn-row {
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.segmented {
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--bisque);
+}
+
+.segmented button {
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 600;
+}
+
+.segmented button[aria-checked='true'] {
+  background: var(--card);
+  color: var(--green);
+  box-shadow: var(--shadow);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--green);
+}
+
+.dev {
+  border-style: dashed;
+}

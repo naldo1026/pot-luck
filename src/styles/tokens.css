@@ -1,0 +1,99 @@
+/* Pottery-studio palette. Her colour (#3b733f) is the primary throughout. */
+:root {
+  --green: #3b733f;
+  --green-deep: #2c5a30;
+  --green-soft: #dfeadb;
+  --clay: #c2693e;
+  --clay-deep: #9e4f2a;
+  --clay-soft: #f3dccd;
+  --honey: #c9971f;
+  --slate: #857b72;
+  --bisque: #e8ddcd;
+  --bisque-deep: #d6c7b2;
+
+  --paper: #f6f1e7;
+  --card: #fffdf8;
+  --ink: #2d2622;
+  --ink-soft: #6b5f57;
+  --line: #ddd2c3;
+  --line-strong: #b9aa98;
+  --speckle: rgba(84, 62, 44, 0.16);
+  --shadow: 0 1px 2px rgba(60, 40, 25, 0.08), 0 6px 18px rgba(60, 40, 25, 0.08);
+  --scrim: rgba(45, 38, 34, 0.45);
+
+  /* Wordle tiles */
+  --tile-correct: var(--green);
+  --tile-present: var(--honey);
+  --tile-absent: var(--slate);
+  --tile-empty-border: var(--line);
+  --tile-filled-border: var(--line-strong);
+  --tile-text-done: #fff;
+  --key-bg: var(--bisque);
+
+  /* Connections glazes (yellow, green, blue, purple — glaze versions of the NYT hues) */
+  --grp-0: #f0d27a;
+  --grp-1: #a9c79c;
+  --grp-2: #b3c6e3;
+  --grp-3: #c7a6d1;
+  --grp-ink: #2d2622;
+  --conn-tile: var(--bisque);
+  --conn-tile-selected: #5b4b40;
+  --conn-tile-selected-ink: #fff;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-hand: 'Caveat', 'Bradley Hand', cursive;
+
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --topbar-h: 56px;
+
+  color-scheme: light;
+}
+
+/* "Kiln at night" */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --green-soft: #22352299;
+    --clay-soft: #3a2a2299;
+    --bisque: #3a332d;
+    --bisque-deep: #4a4139;
+    --paper: #1c1916;
+    --card: #26221e;
+    --ink: #f2ebe1;
+    --ink-soft: #b5a99d;
+    --line: #3e3731;
+    --line-strong: #5c534a;
+    --speckle: rgba(255, 240, 220, 0.07);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 18px rgba(0, 0, 0, 0.3);
+    --scrim: rgba(0, 0, 0, 0.6);
+    --tile-absent: #3a332e;
+    --key-bg: #64594f;
+    --conn-tile: #3a332d;
+    --conn-tile-selected: #cdbfae;
+    --conn-tile-selected-ink: #1c1916;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --green-soft: #22352299;
+  --clay-soft: #3a2a2299;
+  --bisque: #3a332d;
+  --bisque-deep: #4a4139;
+  --paper: #1c1916;
+  --card: #26221e;
+  --ink: #f2ebe1;
+  --ink-soft: #b5a99d;
+  --line: #3e3731;
+  --line-strong: #5c534a;
+  --speckle: rgba(255, 240, 220, 0.07);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 18px rgba(0, 0, 0, 0.3);
+  --scrim: rgba(0, 0, 0, 0.6);
+  --tile-absent: #3a332e;
+  --key-bg: #64594f;
+  --conn-tile: #3a332d;
+  --conn-tile-selected: #cdbfae;
+  --conn-tile-selected-ink: #1c1916;
+  color-scheme: dark;
+}
