@@ -69,12 +69,17 @@ Text containing `✏️` is a placeholder. It shows in `npm run dev` but is hidd
 
 ## Deploying
 
-`npm run build`, then publish `dist/`:
-- **Netlify Drop:** drag `dist/` onto app.netlify.com/drop.
-- **GitHub Pages / Vercel / Cloudflare Pages:** any static host works, and no rewrites are needed because of the HashRouter.
+The site is live at **https://naldo1026.github.io/pot-luck/** and is deployed from **`naldo1026/pot-luck`**, a public repo on the personal GitHub account.
+- Every push to `main` runs `.github/workflows/deploy.yml`: `npm ci`, then `npm test`, then `npm run build`, then GitHub Pages. If a test fails, nothing is published.
+- To update the site: `git commit -am "…" && git push`. Installed copies pick up the new version on their next open, and her progress is kept.
+- **Use the personal account only, never the work (Pirical) one.**
+  - The commit identity is set locally in this repo: `Ronaldo Goncalves <70907458+naldo1026@users.noreply.github.com>`.
+  - The repo-local `credential.https://github.com.helper` pushes as `naldo1026`, using `gh auth token --user naldo1026`.
+  - The globally active `gh` account stays as the work one. For `gh` commands against this repo, prefix them with `GH_TOKEN="$(gh auth token --user naldo1026)"`.
+- Private-repo Pages needs GitHub Pro. That's why the repo is public.
 
 ## Privacy and known limitations
 
-- The passcode is **just for fun**. Photos are part of the public static files, so anyone with the URL who goes digging can see them. Keep the repo private and only share the link with her. For real protection, put the site behind Cloudflare Access (free, email one-time code) or add a backend with auth. `index.html` sets `noindex` and `robots.txt` disallows crawling.
+- The passcode is **just for fun**. The repo is public, so the photos, letter, notes and passcode answer can be read by anyone who browses `naldo1026/pot-luck`, and anything committed stays in the git history. For real protection, put the site behind Cloudflare Access (free, email one-time code) or add a backend with auth. `index.html` sets `noindex` and `robots.txt` disallows crawling.
 - Progress lives in one browser on one device until a backend exists.
 - If she plays in mobile Safari without "Add to Home Screen", iOS may clear site data after weeks of not visiting.
